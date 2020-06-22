@@ -46,7 +46,7 @@ app.route("/articles")
             res.send(err);
         }
     })
-});
+})
 //////////////////////////////resquests targeting specific articles////////////////////////////////////
 app.route("/articles/:articleTitle")
 .get(function(req,res){
@@ -58,6 +58,20 @@ app.route("/articles/:articleTitle")
         }
     })
 })
+.put(function(req, res){
+    const articleTitle = req.params.articleTitle;
+    Article.update(
+      {title: articleTitle},
+      {content: req.body.newContent},
+      {overwrite: true},
+      function(err){
+        if (!err){
+          res.send("Successfully updated the content of the selected article.");
+        } else {
+          res.send(err);
+        }
+      });
+  });
 app.listen(3000,function(){
     console.log("server running on port 3000");
 })
